@@ -1,7 +1,7 @@
 NAME = pipex
 FLAGS = -Wall -Werror -Wextra
 CC = cc
-SRC = 
+SRC = error.c
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
