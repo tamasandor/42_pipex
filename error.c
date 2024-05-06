@@ -6,7 +6,7 @@
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 22:42:20 by atamas            #+#    #+#             */
-/*   Updated: 2024/05/06 19:21:59 by atamas           ###   ########.fr       */
+/*   Updated: 2024/05/06 19:27:51 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,26 +35,28 @@ char	**extract_path(char *envp[])
 char	*command_exists(char **path, char *command)
 {
 	char	*command_plus_program;
+	char	*command_with_slash;
 	int		i;
 
 	i = 0;
 	command = ft_strdup(command);
 	if (access(command, X_OK) == 0)
 		return (command);
-	command = ft_strjoin("/", command);
+	command_with_slash = ft_strjoin("/", command);
+	free(command);
 	while (path[i])
 	{
-		command_plus_program = ft_strjoin(path[i], command);
+		command_plus_program = ft_strjoin(path[i], command_with_slash);
 		printf("here: %s\n", command_plus_program);
 		if (access(command_plus_program, X_OK) == 0)
 		{
 			printf("Found it %s\n", command_plus_program);
-			return (free(command), command_plus_program);
+			return (free(command_with_slash), command_plus_program);
 		}
 		free(command_plus_program);
 		i++;
 	}
-	return (free(command), NULL);
+	return (free(command_with_slash), NULL);
 }
 
 int	main(int argc, char *argv[], char *envp[])
