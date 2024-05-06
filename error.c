@@ -6,19 +6,13 @@
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 22:42:20 by atamas            #+#    #+#             */
-/*   Updated: 2024/05/06 01:50:25 by atamas           ###   ########.fr       */
+/*   Updated: 2024/05/06 19:16:49 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fcntl.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include "pipex.h"
 
-// test
-#include <stdio.h>
-
-char	*extract_path(char *envp[])
+char	**extract_path(char *envp[])
 {
 	char	*path;
 	int		i;
@@ -29,17 +23,59 @@ char	*extract_path(char *envp[])
 		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
 		{
 			path = ft_strchr(envp[i], '/');
-			return (path);
+			break ;
 		}
 		i++;
 	}
+	if (path != NULL)
+		return (ft_split(path, ':'));
 	return (NULL);
+}
+
+char	*command_exists(char **path, char *command)
+{
+	char	*command_plus_program;
+	int		i;
+
+	i = 0;
+	if (access(command, X_OK) == 0)
+		return (command);
+	command = ft_strjoin("/", command);
+	while (path[i])
+	{
+		/* 
+		add '/'
+		 */
+		command_plus_program = ft_strjoin(path[i], command);
+		printf("here: %s\n", command_plus_program);
+		if (access(command_plus_program, X_OK) == 0)
+		{
+			printf("Found it %s\n", command_plus_program);
+			return (free(command), command_plus_program);
+		}
+		free(command_plus_program);
+		i++;
+	}
+	return (free(command), NULL);
 }
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	int			first;
-	const char	*path = extract_path(envp);
+	int		first;
+	char	*freeable;
+	char	**path;
+
+	if (argc != 5)
+		write(2, "Not enough arguments\n", 22);
+	/* 
+	Check if the command is avalible on the local path
+	otherwise pass it to the command_exist and then free it after use
+	 */
+	path = extract_path(envp);
+	freeable = command_exists(path, argv[1]);
+	printf("%s\n", freeable);
+	free(freeable);
+	print_multi(path, 1);
 	/* first = open(argv[1], O_RDONLY);
 	if (first == -1)
 	{

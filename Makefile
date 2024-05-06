@@ -1,7 +1,7 @@
 NAME = pipex
 FLAGS = -Wall -Werror -Wextra
 CC = cc
-SRC = error.c
+SRC = error.c utils.c
 OBJ = $(SRC:.c=.o)
 LIBFT = $(LIBFTDIR)/libft.a
 LIBFTDIR = ./libft

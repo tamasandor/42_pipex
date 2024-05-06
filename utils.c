@@ -1,27 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/06 01:27:22 by atamas            #+#    #+#             */
-/*   Updated: 2024/05/06 17:50:13 by atamas           ###   ########.fr       */
+/*   Created: 2024/05/06 17:40:53 by atamas            #+#    #+#             */
+/*   Updated: 2024/05/06 17:50:42 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#include "pipex.h"
 
-# include "libft/libft.h"
-# include <stdlib.h>
-# include <unistd.h>
-# include <fcntl.h>
+void	print_multi(char **mem, int f)
+{
+	int	i;
 
-// test
-#include <stdio.h>
+	i = 0;
+	while (mem[i])
+	{
+		printf("%s\n", mem[i]);
+		i++;
+	}
+	if (f == 1)
+		free_multi(mem);
+}
 
-void	print_multi(char **mem, int f);
-void	free_multi(char **mem);
+void	free_multi(char **mem)
+{
+	int	i;
 
-#endif
+	i = 0;
+	while (mem[i])
+	{
+		free(mem[i]);
+		i++;
+	}
+	free(mem);
+}
