@@ -6,7 +6,7 @@
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 22:42:20 by atamas            #+#    #+#             */
-/*   Updated: 2024/05/06 19:16:49 by atamas           ###   ########.fr       */
+/*   Updated: 2024/05/06 19:21:59 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,12 @@ char	*command_exists(char **path, char *command)
 	int		i;
 
 	i = 0;
+	command = ft_strdup(command);
 	if (access(command, X_OK) == 0)
 		return (command);
 	command = ft_strjoin("/", command);
 	while (path[i])
 	{
-		/* 
-		add '/'
-		 */
 		command_plus_program = ft_strjoin(path[i], command);
 		printf("here: %s\n", command_plus_program);
 		if (access(command_plus_program, X_OK) == 0)
