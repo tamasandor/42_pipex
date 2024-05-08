@@ -6,7 +6,7 @@
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 01:27:22 by atamas            #+#    #+#             */
-/*   Updated: 2024/05/06 17:50:13 by atamas           ###   ########.fr       */
+/*   Updated: 2024/05/08 17:29:23 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 // test
 #include <stdio.h>
 
-void	print_multi(char **mem, int f);
+void	print_multi(char **mem, int print, int f);
 void	free_multi(char **mem);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 22:42:20 by atamas            #+#    #+#             */
-/*   Updated: 2024/05/06 19:27:51 by atamas           ###   ########.fr       */
+/*   Updated: 2024/05/09 01:44:00 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ char	**extract_path(char *envp[])
 	}
 	if (path != NULL)
 		return (ft_split(path, ':'));
-	return (NULL);
+	write(2, "Path not found\n", 16);
+	exit(1);
 }
 
 char	*command_exists(char **path, char *command)
@@ -47,35 +48,43 @@ char	*command_exists(char **path, char *command)
 	while (path[i])
 	{
 		command_plus_program = ft_strjoin(path[i], command_with_slash);
-		printf("here: %s\n", command_plus_program);
 		if (access(command_plus_program, X_OK) == 0)
-		{
-			printf("Found it %s\n", command_plus_program);
 			return (free(command_with_slash), command_plus_program);
-		}
 		free(command_plus_program);
 		i++;
 	}
 	return (free(command_with_slash), NULL);
 }
 
-int	main(int argc, char *argv[], char *envp[])
+int	main(int argc, char *argv[], char **envp)
 {
 	int		first;
-	char	*freeable;
+	char	*pathcommand;
+	char	**command;
 	char	**path;
 
 	if (argc != 5)
 		write(2, "Not enough arguments\n", 22);
-	/* 
-	Check if the command is avalible on the local path
-	otherwise pass it to the command_exist and then free it after use
-	 */
 	path = extract_path(envp);
-	freeable = command_exists(path, argv[1]);
-	printf("%s\n", freeable);
-	free(freeable);
-	print_multi(path, 1);
+	command = ft_split(argv[1], ' ');
+	if (!command)
+	{
+		write(2, "Allocation failed\n", 19);
+		free_multi(path);
+		exit(1);
+	}
+	pathcommand = command_exists(path, *command);
+	if (!pathcommand)
+	{
+		write(2, "Program doesn't exist\n", 23);
+		free_multi(path);
+		free_multi(command);
+		exit(1);
+	}
+	execve(pathcommand, command, envp);
+	free(pathcommand);
+	print_multi(command, 0, 1);
+	print_multi(path, 0, 1);
 	/* first = open(argv[1], O_RDONLY);
 	if (first == -1)
 	{
