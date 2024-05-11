@@ -6,7 +6,7 @@
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 17:40:53 by atamas            #+#    #+#             */
-/*   Updated: 2024/05/08 17:28:58 by atamas           ###   ########.fr       */
+/*   Updated: 2024/05/11 17:35:40 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,14 @@ void	free_multi(char **mem)
 {
 	int	i;
 
-	i = 0;
-	while (mem[i])
+	if (mem)
 	{
-		free(mem[i]);
-		i++;
+		i = 0;
+		while (mem[i])
+		{
+			free(mem[i]);
+			i++;
+		}
+		free(mem);
 	}
-	free(mem);
 }
