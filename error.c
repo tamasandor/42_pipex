@@ -6,32 +6,11 @@
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 22:42:20 by atamas            #+#    #+#             */
-/*   Updated: 2024/05/09 01:44:00 by atamas           ###   ########.fr       */
+/*   Updated: 2024/05/11 14:35:15 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-char	**extract_path(char *envp[])
-{
-	char	*path;
-	int		i;
-
-	i = 0;
-	while (envp[i])
-	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-		{
-			path = ft_strchr(envp[i], '/');
-			break ;
-		}
-		i++;
-	}
-	if (path != NULL)
-		return (ft_split(path, ':'));
-	write(2, "Path not found\n", 16);
-	exit(1);
-}
 
 char	*command_exists(char **path, char *command)
 {
@@ -56,24 +35,32 @@ char	*command_exists(char **path, char *command)
 	return (free(command_with_slash), NULL);
 }
 
-int	main(int argc, char *argv[], char **envp)
+char	**extract_path(char *envp[])
 {
-	int		first;
-	char	*pathcommand;
-	char	**command;
-	char	**path;
+	char	*path;
+	int		i;
 
-	if (argc != 5)
-		write(2, "Not enough arguments\n", 22);
-	path = extract_path(envp);
-	command = ft_split(argv[1], ' ');
-	if (!command)
+	i = 0;
+	while (envp[i])
 	{
-		write(2, "Allocation failed\n", 19);
-		free_multi(path);
-		exit(1);
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+		{
+			path = ft_strchr(envp[i], '/');
+			break ;
+		}
+		i++;
 	}
-	pathcommand = command_exists(path, *command);
+	if (path != NULL)
+		return (ft_split(path, ':'));
+	write(2, "Path not found\n", 16);
+	exit(1);
+}
+
+int	execute_command(char **path, char **command, char **envp)
+{
+	char	*pathcommand;
+
+	pathcommand = command_exists(path, command[0]);
 	if (!pathcommand)
 	{
 		write(2, "Program doesn't exist\n", 23);
@@ -82,13 +69,37 @@ int	main(int argc, char *argv[], char **envp)
 		exit(1);
 	}
 	execve(pathcommand, command, envp);
-	free(pathcommand);
-	print_multi(command, 0, 1);
-	print_multi(path, 0, 1);
-	/* first = open(argv[1], O_RDONLY);
+}
+
+
+int	main(int argc, char *argv[], char **envp)
+{
+	int		first;
+	char	**command;
+	char	**path;
+
+	if (argc != 5)
+		write(2, "Not enough arguments\n", 22);
+	first = open(argv[1], O_RDONLY);
 	if (first == -1)
 	{
 		write(2, "Error opening the file\n", 24);
 		exit(1);
-	} */
+	}
+	path = extract_path(envp);
+	command = ft_split(argv[2], ' ');
+	if (!command)
+	{
+		write(2, "Allocation failed\n", 19);
+		free_multi(path);
+		exit(1);
+	}
+	int	pid = fork();
+	if (pid == 0)
+		execute_command(path, command, envp);
+	else
+	{
+		print_multi(path, 0, 1);
+		free_multi(command);
+	}
 }
