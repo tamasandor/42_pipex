@@ -6,7 +6,7 @@
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 17:40:53 by atamas            #+#    #+#             */
-/*   Updated: 2024/05/11 23:04:46 by atamas           ###   ########.fr       */
+/*   Updated: 2024/05/11 23:35:53 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,9 @@ int	command_is_correct(char *cmd)
 	return (1);
 }
 
-void	forking_fail(char **cmd, char **path)
+void	forking_fail(char **path)
 {
 	write(2, "Forkin failed\n", 14);
 	free_multi(path);
-	free_multi(cmd);
 	exit(1);
 }

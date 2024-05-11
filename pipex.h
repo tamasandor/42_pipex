@@ -6,7 +6,7 @@
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 01:27:22 by atamas            #+#    #+#             */
-/*   Updated: 2024/05/11 23:04:01 by atamas           ###   ########.fr       */
+/*   Updated: 2024/05/11 23:36:04 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,6 @@ int		command_is_correct(char *cmd);
 char	*command_exists(char **path, char *command);
 char	**extract_path(char *envp[]);
 char	*multi_quetes(char *cmd);
-void	forking_fail(char **cmd, char **path);
+void	forking_fail(char **path);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 22:42:20 by atamas            #+#    #+#             */
-/*   Updated: 2024/05/11 23:12:44 by atamas           ###   ########.fr       */
+/*   Updated: 2024/05/11 23:46:17 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,17 @@ char	**parse_command(char *cmd)
 	return (res);
 }
 
+void	parent(int dupable, int pipe0, int pipe1, char *command, char **envp, char **path)
+{
+		dup2(dupable, 0);
+		close(pipe0);
+		dup2(pipe1, 1);
+		execute_command(path, parse_command(command), envp);
+}
+
 int	main(int argc, char *argv[], char **envp)
 {
 	int		first;
-	char	**command;
 	char	**path;
 	int		pid;
 	int		fd[2];
@@ -78,37 +85,19 @@ int	main(int argc, char *argv[], char **envp)
 		exit (1);
 	}
 	path = extract_path(envp);
-	command = parse_command(argv[2]);
-	if (command == NULL)
-	{
-		free_multi(path);
-		free_multi(command);
-		exit(1);
-	}
 	pid = fork();
 	if (pid == 0)
-	{
-		dup2(first, 0);
-		close(fd[0]);
-		dup2(fd[1], 1);
-		execute_command(path, command, envp);
-	}
+		parent(first, fd[0], fd[1], argv[2], envp, path);
 	else if (pid == -1)
-		forking_fail(command, path);
+		forking_fail(path);
 	else
 	{
 		waitpid(pid, NULL, 0);
 		pid = fork();
 		if (pid == 0)
-		{
-			command = parse_command(argv[3]);
-			dup2(fd[0], 0);
-			close(fd[1]);
-			dup2(file2, 1);
-			execute_command(path, command, envp);
-		}
+			parent(fd[0], fd[1], file2, argv[3], envp, path);
 		else if (pid == -1)
-			forking_fail(command, path);
+			forking_fail(path);
 		else
 		{
 			close(fd[0]);
@@ -117,7 +106,6 @@ int	main(int argc, char *argv[], char **envp)
 			waitpid(pid, NULL, 0);
 			close(file2);
 			free_multi(path);
-			free_multi(command);
 		}
 	}
 }
