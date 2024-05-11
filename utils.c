@@ -6,7 +6,7 @@
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 17:40:53 by atamas            #+#    #+#             */
-/*   Updated: 2024/05/11 17:35:40 by atamas           ###   ########.fr       */
+/*   Updated: 2024/05/11 23:04:46 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,40 @@ void	free_multi(char **mem)
 		}
 		free(mem);
 	}
+}
+
+int	open_file(char *file, int create)
+{
+	int	fd;
+
+	if (!file || !*file)
+	{
+		write(2, "Incorrect file name\n", 20);
+		exit(1);
+	}
+	if (create)
+		fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	else
+		fd = open(file, O_RDONLY);
+	if (fd == -1)
+	{
+		write(2, "Opening the file failed\n", 24);
+		exit(1);
+	}
+	return (fd);
+}
+
+int	command_is_correct(char *cmd)
+{
+	if (!cmd || !cmd[0] || cmd[0] == ' ')
+		return (0);
+	return (1);
+}
+
+void	forking_fail(char **cmd, char **path)
+{
+	write(2, "Forkin failed\n", 14);
+	free_multi(path);
+	free_multi(cmd);
+	exit(1);
 }
