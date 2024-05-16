@@ -6,7 +6,7 @@
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 17:40:53 by atamas            #+#    #+#             */
-/*   Updated: 2024/05/11 23:35:53 by atamas           ###   ########.fr       */
+/*   Updated: 2024/05/16 20:12:41 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ int	open_file(char *file, int create)
 {
 	int	fd;
 
+	fd = -1;
 	if (!file || !*file)
 	{
 		write(2, "Incorrect file name\n", 20);
@@ -60,7 +61,7 @@ int	open_file(char *file, int create)
 		fd = open(file, O_RDONLY);
 	if (fd == -1)
 	{
-		write(2, "Opening the file failed\n", 24);
+		write(2, "Error\n", 6);
 		exit(1);
 	}
 	return (fd);
@@ -75,7 +76,7 @@ int	command_is_correct(char *cmd)
 
 void	forking_fail(char **path)
 {
-	write(2, "Forkin failed\n", 14);
+	write(2, "Forking failed\n", 15);
 	free_multi(path);
 	exit(1);
 }
