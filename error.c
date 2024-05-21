@@ -6,7 +6,7 @@
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 22:42:20 by atamas            #+#    #+#             */
-/*   Updated: 2024/05/16 20:20:11 by atamas           ###   ########.fr       */
+/*   Updated: 2024/05/21 15:31:58 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	execute_command(char **path, char **command, char **envp)
 		write(2, "Program doesn't exist\n", 23);
 		free_multi(path);
 		free_multi(command);
-		exit(1);
+		exit(127);
 	}
 	execve(pathcommand, command, envp);
 	write(2, "Command error\n", 14);
@@ -45,7 +45,7 @@ char	**parse_command(char *cmd)
 	}
 	cmd = multi_quetes(cmd);
 	res = ft_split(cmd, 26);
-	if (!res || !res)
+	if (!res || !*res)
 	{
 		write(2, "Allocation failed or wrong command\n", 35);
 		return (free_multi(res), NULL);
