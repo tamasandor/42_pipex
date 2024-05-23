@@ -5,45 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/06 17:40:53 by atamas            #+#    #+#             */
-/*   Updated: 2024/05/16 20:12:41 by atamas           ###   ########.fr       */
+/*   Created: 2024/05/22 12:34:24 by atamas            #+#    #+#             */
+/*   Updated: 2024/05/23 11:59:45 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-void	print_multi(char **mem, int print, int f)
-{
-	int	i;
-
-	if (print)
-	{
-		i = 0;
-		while (mem[i])
-		{
-			printf("%s\n", mem[i]);
-			i++;
-		}
-	}
-	if (f == 1)
-		free_multi(mem);
-}
-
-void	free_multi(char **mem)
-{
-	int	i;
-
-	if (mem)
-	{
-		i = 0;
-		while (mem[i])
-		{
-			free(mem[i]);
-			i++;
-		}
-		free(mem);
-	}
-}
 
 int	open_file(char *file, int create)
 {
@@ -67,16 +34,18 @@ int	open_file(char *file, int create)
 	return (fd);
 }
 
-int	command_is_correct(char *cmd)
+void	free_multi(char **mem)
 {
-	if (!cmd || !cmd[0] || cmd[0] == ' ')
-		return (0);
-	return (1);
-}
+	int	i;
 
-void	forking_fail(char **path)
-{
-	write(2, "Forking failed\n", 15);
-	free_multi(path);
-	exit(1);
+	if (mem)
+	{
+		i = 0;
+		while (mem[i])
+		{
+			free(mem[i]);
+			i++;
+		}
+		free(mem);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 01:27:22 by atamas            #+#    #+#             */
-/*   Updated: 2024/05/11 23:36:04 by atamas           ###   ########.fr       */
+/*   Updated: 2024/05/23 12:17:37 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,20 @@
 // test
 # include <stdio.h>
 
-void	print_multi(char **mem, int print, int f);
-void	free_multi(char **mem);
-int		open_file(char *file, int create);
-int		command_is_correct(char *cmd);
-char	*command_exists(char **path, char *command);
+int		argument_correct(int argc, char **argv);
 char	**extract_path(char *envp[]);
 char	*multi_quetes(char *cmd);
-void	forking_fail(char **path);
+int		open_file(char *file, int create);
+char	*command_exists(char **path, char *command);
+void	free_multi(char **mem);
+
+typedef struct s_struct
+{
+	int		fd[2];
+	int		readfile;
+	int		writefile;
+	char	**path;
+	char	**envp;
+}	t_struct;
 
 #endif

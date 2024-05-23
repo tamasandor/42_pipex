@@ -1,7 +1,7 @@
 NAME = pipex
 FLAGS = -Wall -Werror -Wextra
 CC = cc
-SRC = error.c utils.c parsing.c
+SRC = error.c main.c parse.c utils.c
 OBJ = $(SRC:.c=.o)
 LIBFT = $(LIBFTDIR)/libft.a
 LIBFTDIR = ./libft
@@ -24,3 +24,5 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
+
+
