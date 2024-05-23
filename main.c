@@ -6,7 +6,7 @@
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:01:19 by atamas            #+#    #+#             */
-/*   Updated: 2024/05/23 12:44:45 by atamas           ###   ########.fr       */
+/*   Updated: 2024/05/23 13:10:25 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	multi_processes(char **argv, t_struct *data)
 		read_process(argv[2], data);
 	else
 	{
-		waitpid(pid, 0, NULL);
+		waitpid(pid, NULL, 0);
 		close(data->readfile);
 	}
 	pid = fork();
@@ -75,7 +75,7 @@ void	multi_processes(char **argv, t_struct *data)
 		write_process(argv[3], data);
 	else
 	{
-		waitpid(pid, 0, NULL);
+		waitpid(pid, NULL, 0);
 		close(data->fd[0]);
 		close(data->fd[1]);
 		close(data->writefile);

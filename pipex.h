@@ -6,7 +6,7 @@
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 01:27:22 by atamas            #+#    #+#             */
-/*   Updated: 2024/05/23 12:17:37 by atamas           ###   ########.fr       */
+/*   Updated: 2024/05/23 13:13:10 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,6 @@
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/wait.h>
-
-// test
-# include <stdio.h>
 
 int		argument_correct(int argc, char **argv);
 char	**extract_path(char *envp[]);

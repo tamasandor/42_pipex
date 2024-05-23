@@ -6,7 +6,7 @@
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 12:28:28 by atamas            #+#    #+#             */
-/*   Updated: 2024/05/23 10:37:11 by atamas           ###   ########.fr       */
+/*   Updated: 2024/05/23 13:09:11 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	argument_correct(int argc, char **argv)
 	}
 	while (*argv)
 	{
-		if (!*argv || *argv[0] == ' ')
+		if (!*argv || !*argv[0] || *argv[0] == ' ')
 		{
 			write(2, "Correct use is ./pipex file1 cmd1 cmd2 file2\n", 45);
 			return (0);
