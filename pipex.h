@@ -6,7 +6,7 @@
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 01:27:22 by atamas            #+#    #+#             */
-/*   Updated: 2024/05/24 14:55:08 by atamas           ###   ########.fr       */
+/*   Updated: 2024/05/24 17:38:45 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,5 @@ int		open_file(char *file, int create);
 char	*command_exists(char **path, char *command);
 void	free_multi(char **mem);
 int		fork_error(int pid, t_struct *data);
-
 
 #endif
