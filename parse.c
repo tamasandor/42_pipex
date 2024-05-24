@@ -6,7 +6,7 @@
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 12:30:16 by atamas            #+#    #+#             */
-/*   Updated: 2024/05/24 14:44:33 by atamas           ###   ########.fr       */
+/*   Updated: 2024/05/24 17:30:45 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ char	*command_exists(char **path, char *command)
 	int		i;
 
 	i = 0;
-	printf("%s\n", command);
 	if (ft_strlen(command) > 2 && command[0] == '.' && command[1] == '/')
 	{
 		if (access(command, X_OK) == 0)
