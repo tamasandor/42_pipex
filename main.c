@@ -6,7 +6,7 @@
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:01:19 by atamas            #+#    #+#             */
-/*   Updated: 2024/05/23 13:10:25 by atamas           ###   ########.fr       */
+/*   Updated: 2024/05/24 15:00:12 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	read_process(char *argv, t_struct *data)
 	char	**cmd;
 	char	*rootcmd;
 
-	multi_quetes(argv);
+	argv = multi_quetes(argv);
 	cmd = ft_split(argv, 26);
 	rootcmd = command_exists(data->path, cmd[0]);
 	if (!rootcmd)
@@ -30,6 +30,7 @@ void	read_process(char *argv, t_struct *data)
 	dup2(data->fd[1], 1);
 	close(data->fd[0]);
 	execve(rootcmd, cmd, data->envp);
+	printf("root: %s %s\n", rootcmd, cmd[0]);
 	write(2, "Command error\n", 14);
 	free_multi(data->path);
 	free_multi(cmd);
@@ -40,7 +41,7 @@ void	write_process(char *argv, t_struct *data)
 	char	**cmd;
 	char	*rootcmd;
 
-	multi_quetes(argv);
+	argv = multi_quetes(argv);
 	cmd = ft_split(argv, 26);
 	rootcmd = command_exists(data->path, cmd[0]);
 	if (!rootcmd)
@@ -53,7 +54,8 @@ void	write_process(char *argv, t_struct *data)
 	dup2(data->fd[0], 0);
 	close(data->fd[1]);
 	execve(rootcmd, cmd, data->envp);
-	write(2, "Command error\n", 14);
+	printf("root: %s %s\n", rootcmd, cmd[0]);
+	write(2, "Command error in write\n", 23);
 	free_multi(data->path);
 	free_multi(cmd);
 }
@@ -63,23 +65,25 @@ void	multi_processes(char **argv, t_struct *data)
 	int	pid;
 
 	pid = fork();
-	if (pid != 0)
-		read_process(argv[2], data);
-	else
+	if (pid <= 0 && !fork_error(pid, data))
 	{
 		waitpid(pid, NULL, 0);
 		close(data->readfile);
 	}
-	pid = fork();
-	if (pid != 0)
-		write_process(argv[3], data);
 	else
+		read_process(argv[2], data);
+	pid = fork();
+	if (pid <= 0 && !fork_error(pid, data))
 	{
 		waitpid(pid, NULL, 0);
 		close(data->fd[0]);
 		close(data->fd[1]);
 		close(data->writefile);
 		free_multi(data->path);
+	}
+	else
+	{
+		write_process(argv[3], data);
 	}
 }
 
