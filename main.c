@@ -6,7 +6,7 @@
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:01:19 by atamas            #+#    #+#             */
-/*   Updated: 2024/05/27 17:06:57 by atamas           ###   ########.fr       */
+/*   Updated: 2024/05/27 19:22:51 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ static int	write_process(char *argv, t_struct *data)
 static void	multi_processes(char **argv, t_struct *data)
 {
 	int	pid;
+	int	pid2;
 	int	status;
 
 	pid = fork();
@@ -76,13 +77,13 @@ static void	multi_processes(char **argv, t_struct *data)
 	{
 		close(data->fd[1]);
 		close(data->readfile);
-		waitpid(pid, NULL, 0);
-		pid = fork();
-		if (pid <= 0 && !fork_error(pid, data))
+		pid2 = fork();
+		if (pid2 <= 0 && !fork_error(pid2, data))
 			write_process(argv[3], data);
 		else
 		{
-			waitpid(pid, &status, 0);
+			waitpid(pid, NULL, 0);
+			waitpid(pid2, &status, 0);
 			close(data->fd[0]);
 			close(data->writefile);
 			free_multi(data->path);
