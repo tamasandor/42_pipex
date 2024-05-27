@@ -6,7 +6,7 @@
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:01:19 by atamas            #+#    #+#             */
-/*   Updated: 2024/05/24 21:26:09 by atamas           ###   ########.fr       */
+/*   Updated: 2024/05/27 15:43:40 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ void	read_process(char *argv, t_struct *data)
 	close(data->fd[1]);
 	close(data->readfile);
 	execve(rootcmd, cmd, data->envp);
-	write(2, "Command error\n", 14);
+	perror(rootcmd);
 	free_multi(data->path);
 	free_multi(cmd);
 	exit(1);
 }
 
-void	write_process(char *argv, t_struct *data)
+int	write_process(char *argv, t_struct *data)
 {
 	char	**cmd;
 	char	*rootcmd;
@@ -58,7 +58,7 @@ void	write_process(char *argv, t_struct *data)
 	close(data->fd[0]);
 	close(data->writefile);
 	execve(rootcmd, cmd, data->envp);
-	write(2, "Command error\n", 14);
+	perror(rootcmd);
 	free_multi(data->path);
 	free_multi(cmd);
 	exit(1);
@@ -67,6 +67,7 @@ void	write_process(char *argv, t_struct *data)
 void	multi_processes(char **argv, t_struct *data)
 {
 	int	pid;
+	int	status;
 
 	pid = fork();
 	if (pid <= 0 && !fork_error(pid, data))
@@ -81,10 +82,12 @@ void	multi_processes(char **argv, t_struct *data)
 			write_process(argv[3], data);
 		else
 		{
-			waitpid(pid, NULL, 0);
+			waitpid(pid, &status, 0);
 			close(data->fd[0]);
 			close(data->writefile);
 			free_multi(data->path);
+			if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
+				exit(WEXITSTATUS(status));
 		}
 	}
 }
@@ -100,7 +103,7 @@ int	main(int argc, char *argv[], char **envp)
 	data.envp = envp;
 	if (pipe(data.fd) == -1)
 	{
-		write(2, "Pipe failed\n", 12);
+		perror("pipe");
 		close(data.writefile);
 		close(data.readfile);
 		exit(1);

@@ -6,7 +6,7 @@
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 12:34:24 by atamas            #+#    #+#             */
-/*   Updated: 2024/05/24 14:52:20 by atamas           ###   ########.fr       */
+/*   Updated: 2024/05/27 14:10:02 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	open_file(char *file, int create)
 		fd = open(file, O_RDONLY);
 	if (fd == -1)
 	{
-		write(2, "Error\n", 6);
+		perror("Error");
 		exit(1);
 	}
 	return (fd);
