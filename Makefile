@@ -1,5 +1,5 @@
 NAME = pipex
-FLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra
 CC = cc
 SRC = error.c main.c parse.c utils.c
 OBJ = $(SRC:.c=.o)
@@ -9,7 +9,7 @@ LIBFTDIR = ./libft
 all: $(NAME)
 
 $(NAME): $(OBJ) $(LIBFT)
-	$(CC) $(FLAGS) $(OBJ) $(LIBFT) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -o $(NAME)
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFTDIR)
