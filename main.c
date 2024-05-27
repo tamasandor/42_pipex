@@ -6,13 +6,13 @@
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:01:19 by atamas            #+#    #+#             */
-/*   Updated: 2024/05/27 15:43:40 by atamas           ###   ########.fr       */
+/*   Updated: 2024/05/27 17:06:57 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	read_process(char *argv, t_struct *data)
+static void	read_process(char *argv, t_struct *data)
 {
 	char	**cmd;
 	char	*rootcmd;
@@ -38,7 +38,7 @@ void	read_process(char *argv, t_struct *data)
 	exit(1);
 }
 
-int	write_process(char *argv, t_struct *data)
+static int	write_process(char *argv, t_struct *data)
 {
 	char	**cmd;
 	char	*rootcmd;
@@ -64,7 +64,7 @@ int	write_process(char *argv, t_struct *data)
 	exit(1);
 }
 
-void	multi_processes(char **argv, t_struct *data)
+static void	multi_processes(char **argv, t_struct *data)
 {
 	int	pid;
 	int	status;
