@@ -6,7 +6,7 @@
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 01:27:22 by atamas            #+#    #+#             */
-/*   Updated: 2024/05/24 18:43:18 by atamas           ###   ########.fr       */
+/*   Updated: 2024/05/28 15:57:58 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ char	**extract_path(char *envp[]);
 char	*multi_quetes(char *cmd);
 int		open_file(char *file, int create);
 char	*command_exists(char **path, char *command);
+char	*executable(char *command);
 void	free_multi(char **mem);
 int		fork_error(int pid, t_struct *data);
 

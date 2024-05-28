@@ -6,11 +6,19 @@
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 12:34:24 by atamas            #+#    #+#             */
-/*   Updated: 2024/05/27 14:10:02 by atamas           ###   ########.fr       */
+/*   Updated: 2024/05/28 16:29:01 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+char	*executable(char *command)
+{
+	if (access(command, X_OK) == 0)
+		return (command);
+	else
+		return (perror(command), NULL);
+}
 
 int	open_file(char *file, int create)
 {
