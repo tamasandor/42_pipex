@@ -6,7 +6,7 @@
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 12:30:16 by atamas            #+#    #+#             */
-/*   Updated: 2024/05/28 15:59:25 by atamas           ###   ########.fr       */
+/*   Updated: 2024/05/29 16:20:26 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	*command_exists(char **path, char *command)
 		if (access(command, F_OK) == 0)
 			return (executable(command));
 		else
-			return (perror(command), NULL);
+			return (write(2, "Command not found\n", 18), NULL);
 	}
 	command_with_slash = ft_strjoin("/", command);
 	while (path[i])
@@ -56,7 +56,8 @@ char	*command_exists(char **path, char *command)
 		free(command_with_path);
 		i++;
 	}
-	return (free(command_with_slash), perror(command), NULL);
+	write(2, "Command not found\n", 18);
+	return (free(command_with_slash), NULL);
 }
 
 char	*multi_quetes(char *cmd)
